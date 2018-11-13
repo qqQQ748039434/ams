@@ -33,6 +33,8 @@ spring:
   rabbitmq:
     host: localhost
     port: 5672
-    username: guest    virtual-host: /
+    username: guest  
+    password: guest
+    virtual-host: /
     publisher-confirms: true  #  消息发送到交换机确认机制,是否确认回调
     publisher-returns: true
