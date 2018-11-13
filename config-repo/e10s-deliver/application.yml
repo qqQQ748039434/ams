@@ -1,0 +1,68 @@
+application:
+  version: 1.0.0
+  copyright: Aisino. All Rights Reserved.
+
+spring:
+  application:
+    name: e10s-deliver
+  profiles:
+    active: dev
+  aop:
+    proxy-target-class: true
+  http:
+    # springmvc http converters 默认jackson
+    converters:
+      preferred-json-mapper: fastjson
+  servlet:
+    # 上传文件大小限制
+    multipart:
+      enabled: true
+      max-file-size: 100Mb
+      max-request-size: 1000Mb
+      file-size-threshold: 0
+  # 使用shiro管理session 关闭spring session
+  session:
+    store-type: none
+  mvc:
+    static-path-pattern: /static/**
+  thymeleaf:
+    prefix: classpath:/templates/
+    encoding: UTF-8
+    cache: false
+    suffix: .html
+    mode: HTML5
+  resources:
+    static-locations: classpath:/static/
+  mail:
+    username: 282243314@qq.com
+    password: qipztwljfosvbjjc
+    host: smtp.qq.com
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+
+# 日志配置文件路径
+logging:
+  config: classpath:log4j2.yml
+
+# mybatis
+mybatis:
+  mapperLocations: classpath:mappers/*.xml
+
+# 服务监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+      health:
+        show-details: ALWAYS
+
+e10s:
+  deliver:
+    # 短信
+    sms:
+      template: "您收到一张%s于%s为您开具的一张金额为%s的电子发票。查看详情可以点击%s"

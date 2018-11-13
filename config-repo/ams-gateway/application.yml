@@ -1,0 +1,130 @@
+spring:
+  http:
+    multipart:
+      max-file-size: 2000Mb      # Max file size，默认1M
+      max-request-size: 2500Mb   # Max request size，默认10M
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  sleuth:
+    sampler:
+      percentage: 0.2
+    integration:
+      enabled: false
+    scheduled:
+      skip-pattern: "^org.*HystrixStreamTask$"
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+
+# zuul 配置
+zuul:
+  ribbon: 
+    eager-load: 
+      enabled: true
+      clients: ams-auth-server, ams-service-upms
+  ignored-services: "*"   # 忽略eureka上的所有服务
+  sensitive-headers:      # 一些比较敏感的请求头，不想通过zuul传递过去， 可以通过该属性进行设置
+  retryable: true
+  host:
+    connect-timeout-millis: 30000
+    socket-timeout-millis: 30000
+  #prefix: /api #为zuul设置一个公共的前缀
+  routes:  # 路由配置方式
+    base:  # 其中 base 是路由名称，可以随便定义，但是path和service-id需要一一对应
+      path: /base/**
+      serviceId: ams-service-base
+    auth:
+      path: /auth/**
+      serviceId: ams-auth-server
+    upms: 
+      path: /admin/**
+      serviceId: ams-service-upms
+    invoice: 
+      path: /invoice/**
+      serviceId: e10s-invoice-receive
+    invoice-deliver: 
+      path: /invoice-deliver/**
+      serviceId: e10s-invoice-deliver
+  
+  ratelimit: # 网关限流(限流插件 https://github.com/marcosbarbero/spring-cloud-zuul-ratelimit)
+      key-prefix: gateway_ratelimit
+      enabled: true
+      repository: REDIS # 存储类型 REDIS, JPA, Consul, IN_MEMORY
+      behind-proxy: true  # 代理之后
+      default-policy-list: #可选 - 针对所有的路由配置的策略，除非特别配置了policies
+        - limit: 10 #可选 - 每个刷新时间窗口对应的请求数量限制
+          quota: 1000 #可选-  每个刷新时间窗口对应的请求时间限制（秒）
+          refresh-interval: 60 #刷新时间窗口的时间，默认值 (秒)
+          type: #可选 限流方式
+            - user
+            - origin
+            - url
+      policy-list:
+        ams-service-upms: #特定的路由
+          - limit: 10 #可选- 每个刷新时间窗口对应的请求数量限制
+            quota: 1000 #可选-  每个刷新时间窗口对应的请求时间限制（秒）
+            refresh-interval: 60 #刷新时间窗口的时间，默认值 (秒)
+            type: #可选 限流方式
+              - user
+              - origin
+              - url
+     
+# 资源服务器忽略访问控制
+resourceserver:
+  ignore:
+    urls:
+      - /mobile/**
+      - /auth/**
+      - /actuator
+      - /actuator/**
+      - /admin/code/*
+      - /admin/smsCode/*
+      - /admin/user/info
+      - /admin/menu/
+      - /swagger-resources/**
+      - /**/swagger-resources/**
+      - /swagger-ui.html
+      - /**/swagger-ui.html
+      - /*/v2/api-docs
+      - /**/v2/api-docs
+      - /swagger/api-docs
+      - /webjars/**
+      - /webjars**
+      - /**/webjars/**
+      - /static/**
+      - /**/static/**
+
+#请求和响应GZIP压缩支持
+feign: 
+  hystrix: 
+    enabled: true
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+    
+hystrix:
+  threadpool:
+    default:
+      coreSize: 1000 # #并发执行的最大线程数，默认10
+      maxQueueSize: 1000 # #BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 500 # #即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+    
+# ribbon 配置 配合服务网关
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 6000
+  ConnectTimeout: 6000
+  MaxAutoRetries: 0   # 对当前服务的重试次数
+  MaxAutoRetriesNextServer: 1 # 切换服务的次数
+  OkToRetryOnAllOperations: false   # 对所有请求操作都进行重试 PUT POST 重试不可取

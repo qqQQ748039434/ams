@@ -1,0 +1,201 @@
+spring:
+  aop:
+    proxy-target-class: true
+  http:
+    # springmvc http converters 默认jackson
+    converters:
+      preferred-json-mapper: fastjson
+  servlet:
+    # 上传文件大小限制
+    multipart:
+      enabled: true
+      max-file-size: 100Mb
+      max-request-size: 1000Mb
+      file-size-threshold: 0
+
+  # 使用shiro管理session 关闭spring session
+  session:
+    store-type: none
+  mvc:
+    static-path-pattern: /static/**
+  freemarker:
+    template-loader-path: classpath:/templates
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+  # 页面缓存 静态资源版本管理 MD5  开发时可关闭
+#  resources:
+#    cachePeriod: 0 #2592000  # 缓存时间 30 day
+#    chain:
+#      strategy:
+#        content:
+#          enabled: true
+#          paths: /**
+
+  # DATASOURCE
+  datasource:
+    # druid 数据连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 合并多个DruidDataSource的监控数据
+    #useGlobalDataSourceStat: true
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+# mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml,classpath:/mapper/common/*Mapper.xml
+  typeAliasesPackage: com.aisino.ams.**.entity
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID", 2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 2
+    #字段策略 0:"忽略判断", 1:"非 NULL 判断"), 2:"非空判断"
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    #数据库大写下划线转换
+    #capital-mode: true
+    #序列接口实现类配置
+    #key-generator: com.baomidou.springboot.xxx
+    #逻辑删除配置
+    #logic-delete-value: 0
+    #logic-not-delete-value: 1
+    #自定义填充策略接口实现
+    #meta-object-handler: com.baomidou.springboot.xxx
+    #自定义SQL注入器
+    #sql-injector: com.aisino.ams.component.orm.MySqlInjector
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    jdbc-type-for-null: "NULL"
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+
+# 组件配置
+component:
+  # 启用数据库
+  database:
+    enabled: true
+
+  # sql日志
+  log4jdbc:
+    enabled: true
+
+  # 线程池
+  threadpooltask:
+    enabled: false
+
+  # 缓存
+  cache:
+    # 启用
+    enabled: true
+    # Redis 作为缓存
+    redis:
+      enabled: true
+      # 默认的超时时间  秒  1day
+      default-ttl: 86400
+      # 设置不同缓存的过期时间 name 对应 @Cacheable value 或者 @CacheConfig cacheNames
+      cache-name-config:
+        - name: user
+          ttl: 3600
+        - name: syserror
+          ttl: -1
+
+  # jwt token
+  jwt:
+    enabled: false
+    config:
+      secret: 6RnNZ$U%
+      expiration: 604800
+
+  # 启用cors 跨域请求
+  cors:
+    enabled: false
+    config:
+      eleccred:
+        mapping: /**
+        allowCredentials: true
+        allowedOrigins: "*"
+        allowedMethods: POST,GET,DELETE,PUT
+        allowedHeaders: "*"
+
+  # 启用CSRF防御 使用JWT后可以停用
+  csrf:
+    enabled: false
+    patterns: /**
+
+  # 启用XSS防御
+  xss:
+    enabled: false
+    patterns: /*
+
+  # 启用访问 log日志
+  weblog:
+    enabled: true
+
+  # 启用shiro
+  shiro:
+    enabled: false
+
+  # 启用quartz
+  quartz:
+    enabled: false
+
+  # 启用schedule
+  schedule:
+    enabled: true
+
+  # idworker
+  idworker:
+    maxCount: 1000
+    type: uuid
+
+  # ftp
+  sftp:
+    host: 192.168.1.100
+    port: 22
+    user:
+      name: root
+      password: 123456
+    timeout: 5000
+    aliveMax: 10
+    baseDir: /user/eleccred/
+    nginx:
+      path: http://localhost/
+
+# 电子凭据赋码消息队列
+e10s:
+  invoice:
+    # 接收消息后放入订单队列
+    signature:
+      concurrency: 10  # 消费者的并发数量
+      max-concurrency: 20 # 消费者的最大并发数量
+      prefetch: 100 # 单个请求中处理的消息数量(每次拉取消息数)
+      exchange: com.aisino.ams.ecredentials.invoice.signature.topic
+      queue: com.aisino.ams.ecredentials.invoice.signature
+      consumer-queue: com.aisino.ams.ecredentials.invoice.assign
+      routing-key: com.aisino.ams.ecredentials.invoice.signature.*
