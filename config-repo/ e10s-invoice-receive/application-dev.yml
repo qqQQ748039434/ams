@@ -31,10 +31,8 @@ spring:
     #    min-idle: 1
     #timeout: 10000ms
   rabbitmq:
-    host: 192.168.10.203
+    host: localhost
     port: 5672
-    username: rabbitadmin
-    password: 123456
-    virtual-host: /
+    username: guest    virtual-host: /
     publisher-confirms: true  #  消息发送到交换机确认机制,是否确认回调
     publisher-returns: true
