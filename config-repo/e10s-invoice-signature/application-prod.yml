@@ -1,6 +1,7 @@
 endpoints:
   enabled: false
 
+  
 #database
 spring:
   datasource:
