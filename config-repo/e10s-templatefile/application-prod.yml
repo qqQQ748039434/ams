@@ -1,7 +1,9 @@
 endpoints:
   enabled: false
 
+  
 #database
+
 spring:
   datasource:
     url: jdbc:mysql://192.168.10.203:3306/ecredentials_templatefile?characterEncoding=utf8&useSSL=false
