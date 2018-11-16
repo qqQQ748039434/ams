@@ -6,12 +6,10 @@ spring:
     password: root
     driverClassName: com.mysql.jdbc.Driver
   redis:
-    cluster:
-      nodes: 127.0.0.1:6379
-      max-redirects: 3
-      timeout: 15000ms
+    host: 127.0.0.1
+    password:
+    port: 6379
     database: 0
-    password: 
     lettuce:
       pool:
         max-active: 1000
