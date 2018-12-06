@@ -37,6 +37,7 @@ spring:
 #          paths: /**
 
   # DATASOURCE
+  
   datasource:
     # druid 数据连接池
     type: com.alibaba.druid.pool.DruidDataSource
