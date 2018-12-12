@@ -34,8 +34,8 @@ spring:
   rabbitmq:
     host: 127.0.0.1 #192.168.10.203
     port: 5672
-    username: guest #rabbitadmin
-    password: guest #123456
+    username: guest   #rabbitadmin
+    password: guest   #123456
     virtual-host: /
     publisher-confirms: true  #  消息发送到交换机确认机制,是否确认回调
     publisher-returns: true

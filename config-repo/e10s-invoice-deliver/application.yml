@@ -203,5 +203,5 @@ e10s:
 deliver:
   url: http://192.168.20.41:8082/deliver
 download:
-  url: http://192.168.20.126:10350/file?fileId=
+  url: http://192.168.20.148:10350/file?fileId=
 
