@@ -16,23 +16,12 @@ spring:
         max-wait: -1ms
         max-idle: 100
         min-idle: 1
-    timeout: 10000m
-    #host: 127.0.0.1
-    ##password:
-    #port: 6379
-    #database: 0
-    #lettuce:
-    #  pool:
-    #    max-active: 1000
-    #    max-wait: -1ms
-    #    max-idle: 100
-    #    min-idle: 1
-    #timeout: 10000ms
+    timeout: 10000ms
   rabbitmq:
-    host:127.0.0.1 #192.168.10.203
+    host: 127.0.0.1 #192.168.10.203
     port: 5672
-    username: guest
-    password: guest
+    username: springcloud #rabbitadmin
+    password: springcloud #123456
     virtual-host: /
     publisher-confirms: true  #  消息发送到交换机确认机制,是否确认回调
     publisher-returns: true
