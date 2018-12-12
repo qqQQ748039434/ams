@@ -29,7 +29,7 @@ spring:
     #    min-idle: 1
     #timeout: 10000ms
   rabbitmq:
-    host: localhost
+    host:127.0.0.1 #192.168.10.203
     port: 5672
     username: guest
     password: guest
