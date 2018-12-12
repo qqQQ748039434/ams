@@ -5,20 +5,6 @@ spring:
     username: root
     password: root
     driverClassName: com.mysql.jdbc.Driver
-  #redis:
-  #  cluster:
-  #    nodes: 192.168.20.65:6379,192.168.20.41:6382,192.168.20.65:6380,192.168.20.41:6383,192.168.20.65:6381,192.168.20.41:6384
-  #    max-redirects: 3
-  #    timeout: 15000ms
-  #  database: 0
-  #  password: aostest
-  #  lettuce:
-  #    pool:
-  #      max-active: 1000
-  #      max-wait: -1ms
-  #      max-idle: 100
-  #      min-idle: 1
-  #  timeout: 10000m
   redis:
     host: 127.0.0.1
     password:
@@ -30,17 +16,23 @@ spring:
         max-wait: -1ms
         max-idle: 100
         min-idle: 1
-    timeout: 10000ms
+    timeout: 10000m
+    #host: 127.0.0.1
+    ##password:
+    #port: 6379
+    #database: 0
+    #lettuce:
+    #  pool:
+    #    max-active: 1000
+    #    max-wait: -1ms
+    #    max-idle: 100
+    #    min-idle: 1
+    #timeout: 10000ms
   rabbitmq:
-    host: 127.0.0.1 #192.168.10.203
+    host: localhost
     port: 5672
-    username: guest   #rabbitadmin
-    password: guest   #123456
+    username: guest
+    password: guest
     virtual-host: /
     publisher-confirms: true  #  消息发送到交换机确认机制,是否确认回调
     publisher-returns: true
-  data:
-    mongodb:
-      uri: mongodb://192.168.20.65:27017/invoice
-      username: invoice
-      password: 1234.abcd
